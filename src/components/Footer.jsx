@@ -32,7 +32,7 @@ const Footer = () => {
 
 					{/* Powered by BTC Conversa */}
 					<div className="text-center text-sm">
-						<p className="text-gray-300">Powered by BTC Conversa</p>
+						<p className="text-gray-300">Powered by Blutech Consulting</p>
 					</div>
 				</div>
 
