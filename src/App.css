@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+html {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	scroll-behavior: smooth;
+}
+
+.background-section {
+	background-image: url("./assets/bg.jpg"); /* Make sure the path is correct */
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
