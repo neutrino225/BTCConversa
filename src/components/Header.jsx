@@ -1,103 +1,139 @@
-import React from "react";
-import Logo from "../assets/Conversa.png";
+import { useState, useEffect } from "react";
+import logo from "../assets/Conversa.png";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+	const navigate = useNavigate();
+
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isScrolled, setIsScrolled] = useState(false);
+
+	const toggleMenu = () => {
+		setIsMenuOpen(!isMenuOpen);
+		document.body.style.overflow = isMenuOpen ? "unset" : "hidden";
+	};
+
+	useEffect(() => {
+		const handleScroll = () => {
+			setIsScrolled(window.scrollY > 20);
+		};
+
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
+
+	// eslint-disable-next-line react/prop-types
+	const NavLink = ({ href, children }) => {
+		return (
+			<a
+				href={href}
+				className="text-white transition-all duration-300 hover:text-blue-300 relative group">
+				{children}
+				<span className="absolute left-0 right-0 bottom-0 h-0.5 bg-blue-300 transform origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+			</a>
+		);
+	};
+
 	return (
-		<header className="absolute inset-x-0 top-0 z-10 w-full px-10">
-			<div className="px-4 mx-auto sm:px-6 lg:px-8 h-8">
-				<div className="flex items-center justify-between h-16 lg:h-20">
+		<header
+			className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+				isScrolled ? "backdrop-blur-3xl bg-blue-950/70" : "bg-transparent"
+			}`}>
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="flex justify-between items-center py-4">
 					{/* Logo */}
-					<div className="flex-shrink-0">
-						<a
-							href="#"
-							title="BTC Conversa"
-							className="flex justify-center items-center gap-2">
-							<img
-								className="w-auto h-8"
-								src={Logo}
-								alt="BTC Conversa Logo"
-								style={{
-									height: "30px",
-									width: "30px",
-								}}
-							/>
-							<p className="text-base text-white font-extrabold">CONVERSA</p>
-						</a>
-					</div>
+					<a
+						className="flex-shrink-0 flex gap-2 justify-center items-center"
+						onClick={() => navigate("/")}>
+						<img className="h-8 w-auto" src={logo} alt="BTC Conversa Logo" />
+						<p>
+							<span className="text-lg text-white font-poppins tracking-wide font-extrabold">
+								CONVERSA
+							</span>
+						</p>
+					</a>
 
-					{/* Centered Navigation Links */}
-					<div className="hidden lg:flex lg:flex-grow lg:justify-center lg:space-x-10">
-						<a
-							href="#features"
-							className="text-base text-white transition-all duration-200 hover:text-opacity-80">
-							Features
-						</a>
+					{/* Desktop Navigation */}
+					<nav className="hidden md:flex space-x-8">
+						<NavLink href="#features">Features</NavLink>
+						<NavLink href="#resources">Resources</NavLink>
+						<NavLink href="#pricing">Pricing</NavLink>
+					</nav>
 
-						<a
-							href="#solutions"
-							className="text-base text-white transition-all duration-200 hover:text-opacity-80">
-							Solutions
-						</a>
-
-						<a
-							href="#resources"
-							className="text-base text-white transition-all duration-200 hover:text-opacity-80">
-							Resources
-						</a>
-
-						<a
-							href="#pricing"
-							className="text-base text-white transition-all duration-200 hover:text-opacity-80">
-							Pricing
-						</a>
-					</div>
-
-					{/* Call-to-Action */}
-					<div className="lg:flex lg:items-center lg:justify-end lg:space-x-6 sm:ml-auto">
-						<a
-							href="#login"
-							className="hidden text-base text-white transition-all duration-200 lg:inline-flex hover:text-opacity-80">
-							Log in
-						</a>
-
-						<a
-							href="#get-started"
-							className="inline-flex items-center px-3 sm:px-5 py-2.5 text-sm sm:text-base font-semibold text-blue-600 bg-white hover:bg-blue-100 rounded-lg"
-							role="button">
+					{/* Desktop Buttons */}
+					<div className="hidden md:flex items-center space-x-4 gap-5">
+						<button
+							className="text-white hover:text-blue-300 transition-colors duration-300"
+							onClick={() => navigate("/login")}>
+							Login
+						</button>
+						<button
+							onClick={() => navigate("/register")}
+							className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
 							Get Started
-						</a>
+						</button>
 					</div>
 
 					{/* Mobile Menu Button */}
-					<button
-						type="button"
-						className="inline-flex p-2 ml-1 text-white transition-all duration-200 rounded-md sm:ml-4 lg:hidden focus:bg-gray-800 hover:bg-gray-800">
-						<svg
-							className="block w-6 h-6"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor">
-							<path
+					<div className="md:hidden">
+						<button
+							onClick={toggleMenu}
+							className="text-white hover:text-blue-300 transition-colors duration-300">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 36 36"
+								width="26"
+								height="26"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="3"
 								strokeLinecap="round"
 								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M4 6h16M4 12h16m-7 6h7"
-							/>
-						</svg>
+								className="transition-transform duration-300 ease-in-out">
+								<line x1="4" y1="8" x2="32" y2="8"></line>
+								<line x1="4" y1="18" x2="32" y2="18"></line>
+								<line x1="4" y1="28" x2="32" y2="28"></line>
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
 
-						<svg
-							className="hidden w-6 h-6"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor">
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M6 18L18 6M6 6l12 12"></path>
-						</svg>
+			{/* Mobile Menu */}
+			<div
+				className={`fixed inset-0 bg-blue-950 z-40 transform ${
+					isMenuOpen ? "translate-x-0" : "translate-x-full"
+				} transition-transform duration-300 ease-in-out md:hidden`}>
+				<div className="absolute top-4 right-4">
+					<button
+						onClick={toggleMenu}
+						className="text-white text-2xl hover:text-blue-300 transition-colors duration-300">
+						&times;
+					</button>
+				</div>
+				<div className="flex flex-col h-full justify-center items-center space-y-8">
+					<NavLink href="#features" onClick={toggleMenu}>
+						Features
+					</NavLink>
+					<hr className="border-white w-3/4" />
+					<NavLink href="#resources" onClick={toggleMenu}>
+						Resources
+					</NavLink>
+					<hr className="border-white w-3/4" />
+					<NavLink href="#pricing" onClick={toggleMenu}>
+						Pricing
+					</NavLink>
+					<hr className="border-white w-3/4" />
+					<button
+						className="text-2xl text-white hover:text-blue-300 transition-colors duration-300"
+						onClick={toggleMenu}>
+						Login
+					</button>
+					<hr className="border-white w-3/4" />
+					<button
+						className="bg-blue-500 text-white text-2xl px-6 py-3 rounded-md hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+						onClick={toggleMenu}>
+						Get Started
 					</button>
 				</div>
 			</div>

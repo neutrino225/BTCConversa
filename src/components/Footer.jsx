@@ -5,7 +5,7 @@ const Footer = () => {
 		<footer className="bg-[#101212] text-white py-10 w-full">
 			<div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
 				{/* Footer Top Section */}
-				<div className="flex justify-between items-center mb-8">
+				<div className="flex flex-col md:flex-row gap-10 justify-between items-center mb-8">
 					{/* Footer Navigation */}
 					<div className="flex space-x-10">
 						<a

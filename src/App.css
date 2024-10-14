@@ -6,10 +6,3 @@ html {
 	padding: 0;
 	scroll-behavior: smooth;
 }
-
-.background-section {
-	background-image: url("./assets/bg.jpg"); /* Make sure the path is correct */
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-}
