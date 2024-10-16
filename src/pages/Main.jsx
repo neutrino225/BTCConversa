@@ -202,13 +202,17 @@ const Main = () => {
 
 				{/* Resizer Handle between panels */}
 				{isOpen && (
-					<PanelResizeHandle className="w-1 bg-gray-800 hover:bg-gray-700 cursor-col-resize" />
+					<PanelResizeHandle className="w-2 bg-gray-800 hover:bg-gray-700 cursor-col-resize" />
 				)}
 
 				{isOpen && (
 					<Panel minSize={25} defaultSize={30}>
 						{/* Sidebar */}
-						<Chatbot toggleSidebar={toggleSidebar} />
+						{/* Add sidebar in a div so the stars dont show in the background */}
+						<div className="sidebar-section h-full flex flex-col bg-[#102D41]">
+							{/* Chatbot component */}
+							<Chatbot toggleSidebar={toggleSidebar} />
+						</div>
 					</Panel>
 				)}
 			</PanelGroup>

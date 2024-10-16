@@ -41,15 +41,14 @@ const Chatbot = ({ toggleSidebar }) => {
 	}, [messages]);
 
 	return (
-		<aside className="bg-[#0B2A3E] w-full h-screen flex flex-col">
+		<aside className="bg-[#0B2A3E] w-full h-screen flex flex-col z-50">
 			<div className="p-4 border-b border-[#1D3A54]">
 				<div className="flex justify-between items-center">
 					<h2 className="text-lg font-semibold text-white">Chat</h2>
 					<button
 						onClick={toggleSidebar}
-						className="text-gray-400 hover:text-gray-600 transition-colors z-30">
+						className="text-gray-400 hover:text-gray-600 transition-colors z-50">
 						{" "}
-						{/* Increased z-index */}
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							className="h-5 w-5"
