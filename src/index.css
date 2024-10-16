@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+	scroll-behavior: smooth;
+}
+
 .message {
 	opacity: 0; /* Start invisible */
 	transform: translateY(10px); /* Start slightly below */

@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 
-const FeatureCard = ({ icon, title, description }) => {
+// eslint-disable-next-line react/prop-types
+export const FeatureCard = ({ icon, title, description }) => {
 	return (
 		<div className="p-6 bg-[#1E2A2A] rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:bg-[#2A3A3A] group">
 			<div className="text-center">
@@ -16,7 +17,8 @@ const FeatureCard = ({ icon, title, description }) => {
 	);
 };
 
-const FeatureIcon = ({ d }) => (
+// eslint-disable-next-line react/prop-types
+export const FeatureIcon = ({ d }) => (
 	<svg
 		className="w-12 h-12 mx-auto text-blue-400 group-hover:text-white transition-colors duration-300"
 		fill="none"
