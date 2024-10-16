@@ -1,22 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import UserMessage from "./messages/User";
 import BotMessage from "./messages/Bot";
-import useChatStore from "../store/useChatStore"; // Import Zustand store
+import useChatStore from "../store/useChatStore";
 
 // eslint-disable-next-line react/prop-types
 const Chatbot = ({ toggleSidebar }) => {
-	const [inputValue, setInputValue] = useState(""); // State for input value
-	const { messages, addMessage } = useChatStore(); // Get messages and addMessage from Zustand store
-	const messagesEndRef = useRef(null); // Ref for the end of the messages
+	const [inputValue, setInputValue] = useState("");
+	const { messages, addMessage } = useChatStore();
+	const messagesEndRef = useRef(null);
 
-	// Handle sending a message
 	const handleSendMessage = () => {
 		if (inputValue.trim()) {
 			// Add user message to store
 			addMessage({ text: inputValue, sender: "user" });
-			setInputValue(""); // Clear the input
+			setInputValue("");
 
-			// Optionally, add a bot response
 			setTimeout(() => {
 				addMessage({
 					text: "I'm a bot. I don't have any responses yet.",
@@ -43,14 +41,15 @@ const Chatbot = ({ toggleSidebar }) => {
 	}, [messages]);
 
 	return (
-		<aside className="bg-[#0B2A3E] h-screen w-full flex flex-col">
-			{/* Chat header */}
+		<aside className="bg-[#0B2A3E] w-full h-screen flex flex-col">
 			<div className="p-4 border-b border-[#1D3A54]">
 				<div className="flex justify-between items-center">
 					<h2 className="text-lg font-semibold text-white">Chat</h2>
 					<button
 						onClick={toggleSidebar}
-						className="text-gray-400 hover:text-gray-600 transition-colors">
+						className="text-gray-400 hover:text-gray-600 transition-colors z-30">
+						{" "}
+						{/* Increased z-index */}
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							className="h-5 w-5"

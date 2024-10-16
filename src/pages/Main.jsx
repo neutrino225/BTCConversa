@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
-import logo from "../assets/Conversa.png";
+import logo_rmbg from "../assets/logo_rmbg.png";
 import Chatbot from "../components/Chatbot";
 import useChatStore from "../store/useChatStore";
 import btclogo from "../assets/BTC.png";
 import { FeatureIcon, FeatureCard } from "../components/Features";
+import PromptCard from "../components/PromptCard";
 
 const Main = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -67,24 +68,41 @@ const Main = () => {
 		},
 	];
 
+	const examples = [
+		{
+			prompt: "What's my account balance?",
+			response: "Your account balance is $1,250.",
+		},
+		{
+			prompt: "Show me my transaction history.",
+			response: "Here are your last 5 transactions.",
+		},
+		{
+			prompt: "Transfer $500 to John Doe.",
+			response: "$500 has been successfully transferred to John Doe.",
+		},
+	];
+
 	return (
 		<>
 			{/* Main content and Sidebar Panel Group */}
 			<PanelGroup direction="horizontal">
-				<Panel minSize={50}>
-					<div className="h-screen flex flex-col bg-gray-900">
+				<Panel minSize={65}>
+					<div className="h-screen flex flex-col">
+						<div className="stars">
+							{Array.from({ length: 50 }).map((_, index) => (
+								<div key={index} className="star"></div>
+							))}
+						</div>
 						{/* Header inside the resizable panel */}
-						<header className="w-9/12 mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center bg-transparent">
+						<header className="header-section w-full max-md:px-5 md:w-9/12 mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center shadow-xl">
 							{/* Logo */}
-							<a className="flex gap-2 items-center">
-								<img
-									className="h-8 w-auto"
-									src={logo}
-									alt="BTC Conversa Logo"
-								/>
-								<span className="text-lg text-white font-poppins tracking-wide font-extrabold">
-									COVERSA
-								</span>
+							<a className="flex-shrink-0 flex gap-2 justify-center items-center">
+								<p>
+									<span className="text-base md:text-2xl text-white font-poppins tracking-wide font-extrabold">
+										CONVERSA
+									</span>
+								</p>
 							</a>
 
 							<button
@@ -94,98 +112,78 @@ const Main = () => {
 							</button>
 						</header>
 
-						{/* <main className="flex h-screen pt-32 overflow-y-auto">
-							<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-								<h1 className="text-3xl font-semibold text-white">
-									Welcome to Conversa
-								</h1>
-								<p className="text-white mt-4">
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-									ullamcorper, nunc et ultrices posuere, turpis felis ultrices
-									odio, nec dictum nulla nunc ac nisi. Nullam auctor, libero
-									eget ultricies ultricies, purus turpis aliquam justo, in
-									sollicitudin lorem libero vitae eros.
-								</p>
-							</div>
-						</main> */}
-						<main className="flex flex-col h-screen pt-32 overflow-y-auto bg-gray-900">
+						<main className="main-section flex flex-col gap-10 pt-32 w-full overflow-y-auto">
 							{/* Hero Section */}
-							<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-								<h1 className="text-6xl font-semibold text-white">
-									Welcome to <span className="text-red-600">Conversa</span>
-								</h1>
-								<p className="text-white mt-4">
-									Simplifying your banking experience with AI-powered
-									conversations.
-								</p>
-								{/* Chat button instruction */}
-								<p className="text-white mt-6 text-lg font-bold">
-									Click the chat button on the right to start talking to the
-									Conversa bot!
-								</p>
-							</div>
-
-							{/* Sample Prompts Section */}
-							<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-								<h2 className="text-3xl font-semibold text-white">
-									How to Talk to Conversa?
-								</h2>
-								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-									{/* First Card: Account Balance */}
-									<div className="bg-blue-900 p-6 rounded-xl shadow-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl">
-										<h3 className="text-2xl font-semibold ">Prompt:</h3>
-										<p className="mt-2 text-lg text-gray-200">
-											&quot;What’s my account balance?&quot;
-										</p>
-										<h3 className="text-xl mt-4 font-semibold text-red-400">
-											Response:
-										</h3>
-										<p className="text-gray-100">
-											&quot;Your account balance is $1,250.&quot;
-										</p>
+							<div className="h-52 w-8/12 mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+								<div className="max-w-7xl mx-auto">
+									<div className="flex justify-center items-center max-md:flex-col gap-5 w-full">
+										<h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg">
+											Welcome to{" "}
+										</h1>
+										<h1 className="relative text-4xl md:text-6xl font-extrabold text-white flex justify-center items-center ml-8 drop-shadow-lg">
+											<span className="max-md:hidden absolute w-16 top-1 -left-12 transform hover:rotate-6 transition-transform duration-300">
+												<img
+													src={logo_rmbg}
+													alt="logo"
+													className="drop-shadow-lg"
+												/>
+											</span>
+											<span className="md:hidden absolute w-10 top-1 -left-8 transform hover:rotate-6 transition-transform duration-300">
+												<img
+													src={logo_rmbg}
+													alt="logo"
+													className="drop-shadow-lg"
+												/>
+											</span>
+											onversa
+										</h1>
 									</div>
 
-									{/* Second Card: Transaction History */}
-									<div className="bg-blue-900 p-6 rounded-xl shadow-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl">
-										<h3 className="text-2xl font-semibold">Prompt:</h3>
-										<p className="mt-2 text-lg text-gray-200">
-											&quot;Show me my transaction history.&quot;
+									<p className="text-gray-300 text-sm mt-4 tracking-wide">
+										Simplifying your banking experience with AI-powered
+										conversations.
+									</p>
+
+									<div className="flex justify-center items-center gap-2 mt-8 transition-transform transform hover:scale-105">
+										<p className="text-white font-semibold text-lg">
+											Powered by
 										</p>
-										<h3 className="text-xl mt-4 font-semibold text-red-400">
-											Response:
-										</h3>
-										<p className="text-gray-100">
-											&quot;Here are your last 5 transactions.&quot;
-										</p>
-									</div>
-									<div className="bg-blue-900 p-6 rounded-xl shadow-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl">
-										<h3 className="text-2xl font-semibold ">Prompt:</h3>
-										<p className="mt-2 text-lg text-gray-200">
-											&quot;Transfer $500 to John Doe.&quot;
-										</p>
-										<h3 className="text-xl mt-4 font-semibold text-red-400">
-											Response:
-										</h3>
-										<p className="text-gray-100">
-											&quot;$500 has been successfully transferred to John
-											Doe.&quot;
-										</p>
+										<img
+											src={btclogo}
+											alt="BluTech Logo"
+											className="h-5 drop-shadow-lg"
+										/>
 									</div>
 								</div>
 							</div>
 
+							{/* Sample Prompts Section */}
+							<section className="features-section backdrop-blur-md rounded-xl p-8 shadow-2xl max-w-7xl mx-auto">
+								<h2 className="text-3xl font-semibold text-white text-center mb-8">
+									How to Talk to Conversa?
+								</h2>
+								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+									{examples.map((item, index) => (
+										<PromptCard
+											key={index}
+											prompt={item.prompt}
+											response={item.response}
+										/>
+									))}
+								</div>
+							</section>
+
 							{/* Features Section */}
-							<div className="flex flex-col gap-5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-								<h2 className="text-3xl font-semibold text-white">
+							<section className="features-section backdrop-blur-md rounded-xl p-8 shadow-2xl max-w-7xl mx-auto">
+								<h2 className="text-3xl font-semibold text-white mb-8 text-center">
 									Why Choose Conversa?
 								</h2>
-
-								<div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 									{features.map((feature, index) => (
 										<FeatureCard key={index} {...feature} />
 									))}
 								</div>
-							</div>
+							</section>
 
 							{/* Footer */}
 							<footer className="mt-auto bg-gray-800 py-4">
@@ -214,26 +212,13 @@ const Main = () => {
 					</Panel>
 				)}
 			</PanelGroup>
-
 			{/* Chat toggle button */}
 			<button
 				onClick={toggleSidebar}
-				className={`fixed bottom-4 right-4 z-10 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 ${
+				className={`fixed bottom-4 right-10 z-10 bg-white text-white p-4 rounded-full shadow-lg ${
 					isOpen ? "hidden" : ""
-				}`}>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					className="h-6 w-6"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor">
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						strokeWidth={2}
-						d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-					/>
-				</svg>
+				} hover:shadow-xl hover:border-red-600 hover:border-2`}>
+				<img src={logo_rmbg} alt="Conversa Logo" className="w-9 h-9" />
 			</button>
 		</>
 	);
