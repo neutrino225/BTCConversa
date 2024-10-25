@@ -57,17 +57,11 @@ const Chatbot = ({ toggleSidebar }) => {
 							text += response.text;
 						});
 
-						console.log(text);
-
 						addMessage({
 							text: text,
 							sender: "bot",
 						});
 					}
-					// addMessage({
-					// 	text: botResponse[0].text, // Assuming the bot response text is in the first item
-					// 	sender: "bot",
-					// });
 				} else {
 					// Fallback response if no valid bot response
 					addMessage({
