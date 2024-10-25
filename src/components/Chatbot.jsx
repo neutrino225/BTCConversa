@@ -41,10 +41,33 @@ const Chatbot = ({ toggleSidebar }) => {
 
 				// Add the bot's response to the message store
 				if (botResponse && botResponse.length > 0) {
-					addMessage({
-						text: botResponse[0].text, // Assuming the bot response text is in the first item
-						sender: "bot",
-					});
+					console.log(botResponse);
+
+					if (botResponse.length === 1) {
+						addMessage({
+							text: botResponse[0].text,
+							sender: "bot",
+						});
+					}
+
+					if (botResponse.length > 1) {
+						// Create a new text concatenated with all the responses
+						let text = "";
+						botResponse.forEach((response) => {
+							text += response.text;
+						});
+
+						console.log(text);
+
+						addMessage({
+							text: text,
+							sender: "bot",
+						});
+					}
+					// addMessage({
+					// 	text: botResponse[0].text, // Assuming the bot response text is in the first item
+					// 	sender: "bot",
+					// });
 				} else {
 					// Fallback response if no valid bot response
 					addMessage({
