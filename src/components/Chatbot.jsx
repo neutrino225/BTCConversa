@@ -3,24 +3,64 @@ import UserMessage from "./messages/User";
 import BotMessage from "./messages/Bot";
 import useChatStore from "../store/useChatStore";
 
+import sendMessage from "../services/message";
+
 // eslint-disable-next-line react/prop-types
 const Chatbot = ({ toggleSidebar }) => {
 	const [inputValue, setInputValue] = useState("");
 	const { messages, addMessage } = useChatStore();
 	const messagesEndRef = useRef(null);
 
-	const handleSendMessage = () => {
+	const handleSendMessage = async () => {
+		// Get the input message from your input field
 		if (inputValue.trim()) {
-			// Add user message to store
+			// Add the user's message to the store
 			addMessage({ text: inputValue, sender: "user" });
+
+			// Clear the input field after sending the message
 			setInputValue("");
 
-			setTimeout(() => {
+			// Get sender_id and account_number from sessionStorage
+			const sender_id = sessionStorage.getItem("sender_id");
+			const account_number = sessionStorage.getItem("account_number");
+
+			if (!sender_id || !account_number) {
+				console.error(
+					"Sender ID or Account number not found in sessionStorage"
+				);
+				return;
+			}
+
+			try {
+				// Send the message to the backend
+				const botResponse = await sendMessage(
+					inputValue,
+					sender_id,
+					account_number
+				);
+
+				// Add the bot's response to the message store
+				if (botResponse && botResponse.length > 0) {
+					addMessage({
+						text: botResponse[0].text, // Assuming the bot response text is in the first item
+						sender: "bot",
+					});
+				} else {
+					// Fallback response if no valid bot response
+					addMessage({
+						text: "I don't have any responses yet.",
+						sender: "bot",
+					});
+				}
+			} catch (error) {
+				console.error(error.message);
+
+				// Handle any errors while sending the message
 				addMessage({
-					text: "I'm a bot. I don't have any responses yet.",
+					text: "Error sending message. Please try again.",
 					sender: "bot",
 				});
-			}, 1000);
+			}
 		}
 	};
 

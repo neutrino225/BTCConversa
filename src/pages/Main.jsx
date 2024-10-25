@@ -16,7 +16,10 @@ const Main = () => {
 
 	const handleLogout = () => {
 		clearMessages();
-		localStorage.removeItem("user");
+
+		sessionStorage.removeItem("sender_id");
+		sessionStorage.removeItem("account_number");
+
 		window.location.href = "/";
 	};
 

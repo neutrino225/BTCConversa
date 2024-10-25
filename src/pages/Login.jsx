@@ -1,17 +1,48 @@
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-	const [email, setEmail] = useState("");
+	const navigate = useNavigate();
+
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// Handle login logic here
-		console.log("Login attempt with:", { email, password });
 
-		setTimeout(() => {
-			window.location.href = "/app";
-		}, 1000);
+		// POST request with username and password
+		const data = {
+			username,
+			password,
+		};
+
+		try {
+			// Send the POST request with username and password
+			const response = await axios.post("http://127.0.0.1:5000/login", data, {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			// Extract sender_id and account_number from the response
+			const sender_id = response.data.sender_id;
+			const account_number = response.data.account_number;
+
+			// Save sender_id and account_number in sessionStorage
+			sessionStorage.setItem("sender_id", sender_id);
+			sessionStorage.setItem("account_number", account_number);
+
+			// Redirect to the app page
+			navigate("/app");
+
+			// Clear form fields
+			setUsername("");
+			setPassword("");
+		} catch (error) {
+			console.error("Error during login:", error);
+		}
 	};
 
 	return (
@@ -26,19 +57,19 @@ const Login = () => {
 					<input type="hidden" name="remember" value="true" />
 					<div className="rounded-md shadow-sm -space-y-px flex flex-col gap-5">
 						<div className="neumorphism bg-[#1E2A2A] p-4 rounded-md">
-							<label htmlFor="email-address" className="sr-only">
-								Email address
+							<label htmlFor="username" className="sr-only">
+								Username
 							</label>
 							<input
-								id="email-address"
-								name="email"
-								type="email"
-								autoComplete="email"
+								id="username"
+								name="username"
+								type="text"
+								autoComplete="username"
 								required
 								className="appearance-none rounded-md relative block w-full px-3 py-2 border border-transparent text-zinc-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:z-10 sm:text-sm bg-transparent"
-								placeholder="Email address"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
+								placeholder="Username"
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
 							/>
 						</div>
 
