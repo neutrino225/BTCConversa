@@ -10,7 +10,7 @@ const UserMessage = ({ message }) => {
 
 	return (
 		<div className={`flex justify-end message ${isVisible ? "visible" : ""}`}>
-			<div className="bg-gray-600 p-3 rounded-lg max-w-[50%] shadow">
+			<div className="bg-gray-600 p-3 rounded-lg max-w-[80%] md:max-w-[50%] shadow">
 				<p className="text-white">{message}</p>
 			</div>
 		</div>

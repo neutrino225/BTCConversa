@@ -103,7 +103,7 @@ const FeaturesSection = () => {
 	return (
 		<section
 			id="features"
-			className="relative w-full py-20 px-10 sm:py-24 sm:px-16 lg:px-24 bg-gradient-to-b from-[#537895] to-[#09203f] overflow-hidden"
+			className="relative w-full py-20 px-10 sm:py-24 sm:px-16 lg:px-24 overflow-hidden"
 			ref={sectionRef}>
 			<div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 relative z-10">
 				{/* Heading */}
@@ -113,8 +113,8 @@ const FeaturesSection = () => {
 					</h2>
 					<p className="text-base text-gray-300 sm:text-lg">
 						BTC Conversa offers a range of features to help you manage your
-						finances. From account management to personalized insights, we've
-						got you covered.
+						finances. From account management to personalized insights,
+						we&apos;ve got you covered.
 					</p>
 				</div>
 

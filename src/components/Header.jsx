@@ -112,27 +112,29 @@ const Header = () => {
 					</button>
 				</div>
 				<div className="flex flex-col h-full justify-center items-center space-y-8">
-					<NavLink href="#features" onClick={toggleMenu}>
-						Features
-					</NavLink>
+					<button onClick={toggleMenu}>
+						<NavLink href="#features">Features</NavLink>
+					</button>
 					<hr className="border-white w-3/4" />
-					<NavLink href="#resources" onClick={toggleMenu}>
-						Resources
-					</NavLink>
+					<button onClick={toggleMenu}>
+						<NavLink href="#resources">Resources</NavLink>
+					</button>
 					<hr className="border-white w-3/4" />
-					<NavLink href="#pricing" onClick={toggleMenu}>
-						Pricing
-					</NavLink>
+					<button onClick={toggleMenu}>
+						<NavLink href="#pricing">Pricing</NavLink>
+					</button>
 					<hr className="border-white w-3/4" />
 					<button
-						className="text-2xl text-white hover:text-blue-300 transition-colors duration-300"
-						onClick={toggleMenu}>
+						className="text-lg text-white hover:text-blue-300 transition-colors duration-300"
+						onClick={() => {
+							navigate("/login");
+						}}>
 						Login
 					</button>
 					<hr className="border-white w-3/4" />
 					<button
-						className="bg-blue-500 text-white text-2xl px-6 py-3 rounded-md hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-						onClick={toggleMenu}>
+						className="bg-blue-500 text-white text-lg px-3 py-1.5 rounded-md hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+						onClick={() => navigate("/register")}>
 						Get Started
 					</button>
 				</div>

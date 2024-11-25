@@ -5,6 +5,25 @@ import useChatStore from "../store/useChatStore";
 
 import sendMessage from "../services/message";
 
+import TransactionTable from "./TransactionTable";
+
+// Sample transaction data for testing
+const sampleTransactions = [
+	{
+		date: "2023-10-01",
+		description: "Grocery Store",
+		amount: 50.0,
+		type: "debit",
+	},
+	{ date: "2023-10-02", description: "Salary", amount: 2000.0, type: "credit" },
+	{
+		date: "2023-10-03",
+		description: "Utility Bill",
+		amount: 150.0,
+		type: "debit",
+	},
+];
+
 // eslint-disable-next-line react/prop-types
 const Chatbot = ({ toggleSidebar }) => {
 	const [inputValue, setInputValue] = useState("");
@@ -16,6 +35,19 @@ const Chatbot = ({ toggleSidebar }) => {
 		if (inputValue.trim()) {
 			// Add the user's message to the store
 			addMessage({ text: inputValue, sender: "user" });
+
+			if (inputValue.toLowerCase() === "show transactions") {
+				addMessage({
+					text: "Here are your transactions:",
+					sender: "bot",
+				});
+				addMessage({
+					text: <TransactionTable transactions={sampleTransactions} />,
+					sender: "bot",
+				});
+				setInputValue("");
+				return;
+			}
 
 			// Clear the input field after sending the message
 			setInputValue("");
@@ -44,10 +76,21 @@ const Chatbot = ({ toggleSidebar }) => {
 					console.log(botResponse);
 
 					if (botResponse.length === 1) {
-						addMessage({
-							text: botResponse[0].text,
-							sender: "bot",
-						});
+						if (botResponse[0].type === "table") {
+							addMessage({
+								text: "Here are your transactions:",
+								sender: "bot",
+							});
+							addMessage({
+								text: <TransactionTable transactions={botResponse[0].data} />,
+								sender: "bot",
+							});
+						} else {
+							addMessage({
+								text: botResponse[0].text,
+								sender: "bot",
+							});
+						}
 					}
 
 					if (botResponse.length > 1) {
@@ -130,6 +173,14 @@ const Chatbot = ({ toggleSidebar }) => {
 					{messages.map((message, index) => {
 						if (message.sender === "user") {
 							return <UserMessage key={index} message={message.text} />;
+						}
+						// Check if the message text is a React element
+						if (
+							typeof message.text === "object" &&
+							message.text !== null &&
+							message.text.type
+						) {
+							return <div key={index}>{message.text}</div>;
 						}
 						return <BotMessage key={index} message={message.text} />;
 					})}

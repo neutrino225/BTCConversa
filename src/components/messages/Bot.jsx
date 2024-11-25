@@ -10,7 +10,7 @@ const BotMessage = ({ message }) => {
 
 	return (
 		<div className={`flex justify-start message ${isVisible ? "visible" : ""}`}>
-			<div className="bg-blue-500 p-3 rounded-lg max-w-[50%] shadow">
+			<div className="bg-blue-500 p-3 rounded-lg max-w-[80%] md:max-w-[50%] shadow">
 				<p
 					className="text-white"
 					dangerouslySetInnerHTML={{ __html: message }}></p>
