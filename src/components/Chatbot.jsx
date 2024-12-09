@@ -3,51 +3,31 @@ import UserMessage from "./messages/User";
 import BotMessage from "./messages/Bot";
 import useChatStore from "../store/useChatStore";
 
+import logo from "../assets/Conversa.png";
+
 import sendMessage from "../services/message";
 
 import TransactionTable from "./TransactionTable";
-
-// Sample transaction data for testing
-const sampleTransactions = [
-	{
-		date: "2023-10-01",
-		description: "Grocery Store",
-		amount: 50.0,
-		type: "debit",
-	},
-	{ date: "2023-10-02", description: "Salary", amount: 2000.0, type: "credit" },
-	{
-		date: "2023-10-03",
-		description: "Utility Bill",
-		amount: 150.0,
-		type: "debit",
-	},
-];
+import BankSelector from "./BankSelector";
 
 // eslint-disable-next-line react/prop-types
-const Chatbot = ({ toggleSidebar }) => {
+const Chatbot = ({ toggleSidebar, selectedPrompt }) => {
 	const [inputValue, setInputValue] = useState("");
 	const { messages, addMessage } = useChatStore();
 	const messagesEndRef = useRef(null);
+
+	// Update input field when selectedPrompt changes
+	useEffect(() => {
+		if (selectedPrompt) {
+			setInputValue(selectedPrompt); // Update the input value with the selected prompt
+		}
+	}, [selectedPrompt]);
 
 	const handleSendMessage = async () => {
 		// Get the input message from your input field
 		if (inputValue.trim()) {
 			// Add the user's message to the store
 			addMessage({ text: inputValue, sender: "user" });
-
-			if (inputValue.toLowerCase() === "show transactions") {
-				addMessage({
-					text: "Here are your transactions:",
-					sender: "bot",
-				});
-				addMessage({
-					text: <TransactionTable transactions={sampleTransactions} />,
-					sender: "bot",
-				});
-				setInputValue("");
-				return;
-			}
 
 			// Clear the input field after sending the message
 			setInputValue("");
@@ -76,20 +56,54 @@ const Chatbot = ({ toggleSidebar }) => {
 					console.log(botResponse);
 
 					if (botResponse.length === 1) {
-						if (botResponse[0].type === "table") {
-							addMessage({
-								text: "Here are your transactions:",
-								sender: "bot",
-							});
-							addMessage({
-								text: <TransactionTable transactions={botResponse[0].data} />,
-								sender: "bot",
-							});
+						if (botResponse[0].custom.type === "transactions") {
+							// if the custom.type.transactions contains a message append it to the chat else show the transactions
+							if (botResponse[0].custom.transactions.message) {
+								addMessage({
+									text: botResponse[0].custom.transactions.message,
+									sender: "bot",
+								});
+							} else {
+								addMessage({
+									text: "Here are your transactions:",
+									sender: "bot",
+								});
+
+								addMessage({
+									text: (
+										<TransactionTable
+											transactions={botResponse[0].custom.transactions}
+										/>
+									),
+									sender: "bot",
+								});
+							}
 						} else {
-							addMessage({
-								text: botResponse[0].text,
-								sender: "bot",
-							});
+							if (botResponse[0].text === "Please provide the bank name.") {
+								addMessage({
+									text: (
+										<BankSelector
+											banks={[
+												"Allied Bank",
+												"Bank of Punjab",
+												"Habib Bank",
+												"MCB Bank",
+												"United Bank",
+											]}
+											onSubmit={(selectedBank) => {
+												// Pass the value to the bot as a message from the user
+												setInputValue(selectedBank);
+											}}
+										/>
+									),
+									sender: "bot",
+								});
+							} else {
+								addMessage({
+									text: botResponse[0].text,
+									sender: "bot",
+								});
+							}
 						}
 					}
 
@@ -141,17 +155,17 @@ const Chatbot = ({ toggleSidebar }) => {
 	}, [messages]);
 
 	return (
-		<aside className="bg-[#0B2A3E] w-full h-screen flex flex-col z-50">
-			<div className="p-4 border-b border-[#1D3A54]">
+		<aside className="bg-[#ffffff] w-full h-screen flex flex-col z-50">
+			<div className="p-4 border-b border-[#D9D9D9]">
 				<div className="flex justify-between items-center">
-					<h2 className="text-lg font-semibold text-white">Chat</h2>
+					<img src={logo} alt="Conversa" className="w-10" />
 					<button
 						onClick={toggleSidebar}
-						className="text-gray-400 hover:text-gray-600 transition-colors z-50">
+						className="text-black hover:text-gray-600 transition-colors z-50">
 						{" "}
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							className="h-5 w-5"
+							className="h-6 w-6"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor">
@@ -167,13 +181,17 @@ const Chatbot = ({ toggleSidebar }) => {
 			</div>
 
 			{/* Chat messages */}
-			<div className="flex-grow overflow-y-auto bg-[#102D41] p-4">
+			<div className="flex-grow overflow-y-auto bg-white p-4">
+				{" "}
+				{/* //bg-[#102D41] */}
 				<div className="flex flex-col space-y-4 gap-4">
 					{/* Render messages from Zustand store */}
 					{messages.map((message, index) => {
+						// Check if the message is sent by the user
 						if (message.sender === "user") {
 							return <UserMessage key={index} message={message.text} />;
 						}
+
 						// Check if the message text is a React element
 						if (
 							typeof message.text === "object" &&
@@ -182,6 +200,8 @@ const Chatbot = ({ toggleSidebar }) => {
 						) {
 							return <div key={index}>{message.text}</div>;
 						}
+
+						// Render bot message
 						return <BotMessage key={index} message={message.text} />;
 					})}
 					{/* Reference to the end of the messages */}
@@ -190,20 +210,20 @@ const Chatbot = ({ toggleSidebar }) => {
 			</div>
 
 			{/* Message input and send button */}
-			<div className="p-3 bg-[#0B2A3E] border-t border-[#1D3A54]">
-				<div className="flex">
+			<div className="p-3 bg-[#ffffff] border-t border-[#D9D9D9]">
+				<div className="flex relative">
 					<textarea
 						placeholder="Type a message..."
 						value={inputValue}
 						onChange={(e) => setInputValue(e.target.value)} // Update input value
 						onKeyDown={handleKeyDown} // Handle Enter key press
-						className="flex-1 p-3 bg-[#1A4564] text-white border-none outline-none placeholder-gray-400 resize-none" // Added resize-none
+						className="flex-1 p-4 bg-[#ECF2FF] rounded-full text-black border-none outline-none placeholder-gray-400 resize-none" // Added resize-none
 						rows="1" // Set default height
 						style={{ overflow: "hidden" }} // Hide scrollbar initially
 					/>
 					<button
 						onClick={handleSendMessage} // Call send message handler
-						className="p-3 bg-blue-600 text-white hover:bg-blue-700 transition-colors flex-shrink-0" // Added flex-shrink-0 to maintain size
+						className="absolute p-3 rounded-full right-1.5 bottom-1 bg-blue-600 text-white hover:bg-blue-700 transition-colors flex-shrink-0" // Added flex-shrink-0 to maintain size
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

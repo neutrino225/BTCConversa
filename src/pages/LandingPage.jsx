@@ -65,7 +65,7 @@ const LandingPage = () => {
 
 			{/* Landing Page Content */}
 			<motion.div
-				className="relative w-full min-h-screen flex flex-col justify-start items-start bg-gradient-to-b from-[#00274d] to-[#537895] bg-no-repeat bg-cover"
+				className="relative w-full min-h-screen flex flex-col justify-start items-start bg-gradient-to-b from-[#00274d] to-[#537895] bg-no-repeat bg-cover bg-fixed"
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: isLoading ? 0 : 1, y: isLoading ? 20 : 0 }}
 				transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
@@ -96,7 +96,7 @@ const LandingPage = () => {
 								animate="visible"
 								transition={{ delay: 0.6, duration: 1.2 }}>
 								{`BTC Conversa uses conversational AI to simplify your banking experience.
-                                Manage your account, view transactions, and get personalized insights—effortlessly.`}
+          Manage your account, view transactions, and get personalized insights—effortlessly.`}
 							</motion.p>
 
 							<motion.a

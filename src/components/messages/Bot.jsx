@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import logo from "../../assets/Conversa.png";
 
-// eslint-disable-next-line react/prop-types
 const BotMessage = ({ message }) => {
 	const [isVisible, setIsVisible] = useState(false);
 
@@ -10,9 +11,15 @@ const BotMessage = ({ message }) => {
 
 	return (
 		<div className={`flex justify-start message ${isVisible ? "visible" : ""}`}>
-			<div className="bg-blue-500 p-3 rounded-lg max-w-[80%] md:max-w-[50%] shadow">
+			<div className="bg-transparent p-3 rounded-lg shadow flex justify-start items-start">
+				<img
+					src={logo}
+					alt="Conversa Logo"
+					className="w-8 h-8 rounded-full mr-2"
+				/>
+
 				<p
-					className="text-white"
+					className="text-black"
 					dangerouslySetInnerHTML={{ __html: message }}></p>
 			</div>
 		</div>
